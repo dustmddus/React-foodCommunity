@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
+import ReactHtmlParser from "react-html-parser";
+import Axios from "axios";
+import { Link } from "react-router-dom";
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -23,15 +26,23 @@ function RegisterPage() {
   };
 
   const onSubmit = (event) => {
-    event.preventDefault();
     if (password !== confirmPassword) {
       return alert("비밀번호와 비밀번호확인은 같아야 합니다.");
+    } else {
+      Axios.post("http://localhost:8000/api/register", {
+        name: name,
+        email: email,
+        password: password,
+      }).then(() => {
+        alert("회원가입 완료!");
+      });
     }
+    console.log(name);
   };
 
   return (
-    <div class="loginregister">
-      <form>
+    <div className="loginregister">
+      <div>
         <div>
           <input
             name="name"
@@ -39,7 +50,7 @@ function RegisterPage() {
             placeholder="이름"
             value={name}
             onChange={onNameHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
@@ -49,7 +60,7 @@ function RegisterPage() {
             placeholder="이메일"
             value={email}
             onChange={onEmailHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
@@ -59,7 +70,7 @@ function RegisterPage() {
             placeholder="비밀번호"
             value={password}
             onChange={onPasswordHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
@@ -69,19 +80,20 @@ function RegisterPage() {
             placeholder="비밀번호 확인"
             value={confirmPassword}
             onChange={onConfirmPasswordHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
           <button
             type="submit"
-            onSubmit={onSubmit}
-            class="loginregister__button"
+            onClick={onSubmit}
+            className="loginregister__button"
           >
             계정 생성하기
           </button>
+          {/* <Link to={"/login"}></Link> */}
         </div>
-      </form>
+      </div>
     </div>
   );
 }

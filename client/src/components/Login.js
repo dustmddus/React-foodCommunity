@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
+import Axios from "axios";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,13 +14,23 @@ function LoginPage() {
     setPassword(event.currentTarget.value);
   };
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = () => {
+    Axios.post("http://localhost:8000/api/login", {
+      email: email,
+      password: password,
+    });
+    // Axios.get("http://localhost:8000/api/get").then((response) => {
+    //   if (response !== null) {
+    //     alert("로그인 성공");
+    //   } else {
+    //     alert("실패!");
+    //   }
+    // });
   };
 
   return (
-    <div class="loginregister">
-      <form>
+    <div className="loginregister">
+      <div>
         <div>
           <input
             name="email"
@@ -27,7 +38,7 @@ function LoginPage() {
             placeholder="이메일"
             value={email}
             onChange={onEmailHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
@@ -37,19 +48,19 @@ function LoginPage() {
             placeholder="비밀번호"
             value={password}
             onChange={onPasswordHandler}
-            class="loginregister__input"
+            className="loginregister__input"
           />
         </div>
         <div>
           <button
             type="submit"
-            onSubmit={onSubmit}
-            class="loginregister__button"
+            onClick={onSubmit}
+            className="loginregister__button"
           >
             로그인
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
