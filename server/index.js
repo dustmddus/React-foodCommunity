@@ -6,7 +6,10 @@ const bodyParser = require("body-parser");
 const { urlencoded } = require("body-parser");
 const PORT = process.env.port || 8000;
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 const saltRounds = 10;
+const expressSession = require("express-session");
+const { request } = require("express");
 
 const db = mysql.createPool({
   host: "localhost",
@@ -16,9 +19,20 @@ const db = mysql.createPool({
 });
 
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cookieParser());
+app.use(
+  expressSession({
+    secret: "my key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
+app.use(bodyParser.json());
 app.post("/api/register", (req, res, next) => {
   const param = [req.body.name, req.body.email, req.body.password];
   bcrypt.hash(param[2], saltRounds, (error, hash) => {
@@ -30,26 +44,22 @@ app.post("/api/register", (req, res, next) => {
   });
 });
 
-app.post("/api/login", (req, res, next) => {
+app.post("/api/login", (req, res) => {
   const param = [req.body.email, req.body.password];
   db.query("SELECT * FROM member WHERE email=?", param[0], (err, row) => {
     if (err) console.log(err);
     if (row.length > 0) {
       bcrypt.compare(param[1], row[0].password, (err, result) => {
         if (result) {
-          // app.get("/api/login", (req, res) => {
-          //   res.send("success");
-          // });
-          console.log("success");
+          req.session.login = true;
+          req.session.email = param[0];
+          req.session.password = param[1];
+          res.redirect("/");
+          res.end();
         } else {
-          console.log("비밀번호가 틀렸어");
         }
       });
     } else {
-      // app.get("/api/login", (req, res) => {
-      //   res.send("fail");
-      // });
-      console.log("id가 존재 하지않는다");
     }
   });
 });

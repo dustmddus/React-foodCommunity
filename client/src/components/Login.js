@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Register.css";
 import Axios from "axios";
-
+import { Link } from "react-router-dom";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -19,13 +18,11 @@ function LoginPage() {
       email: email,
       password: password,
     });
-    // Axios.get("http://localhost:8000/api/get").then((response) => {
-    //   if (response !== null) {
-    //     alert("로그인 성공");
-    //   } else {
-    //     alert("실패!");
-    //   }
-    // });
+    Axios.get("http://localhost:8000/api/logincheck").then((response) => {
+      if (response.data === "success") {
+        console.log(response);
+      }
+    });
   };
 
   return (
