@@ -1,8 +1,9 @@
 import TodoItem from "./TodoItem";
+import * as S from "./TodoList.style.js";
 
 const TodoList = ({ todoList, handleDeleteBtn, handleCheckbox }) => {
   return (
-    <ul>
+    <S.List>
       {todoList.map((todo) => (
         <TodoItem
           id={todo.id}
@@ -11,7 +12,7 @@ const TodoList = ({ todoList, handleDeleteBtn, handleCheckbox }) => {
           handleCheckbox={handleCheckbox}
         />
       ))}
-    </ul>
+    </S.List>
   );
 };
 

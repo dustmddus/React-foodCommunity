@@ -1,22 +1,23 @@
+import * as S from "./TodoItem.style.js";
 const TodoItem = ({ todo, handleDeleteBtn, handleCheckbox }) => {
   return (
-    <li>
-      <input
+    <S.Li>
+      <S.CheckboxInput
         type="checkbox"
         checked={todo.checked}
         onChange={() => handleCheckbox(todo.id)}
-      ></input>
-      <span style={{ textDecoration: todo.checked ? "line-through" : null }}>
+      />
+      <S.Text style={{ textDecoration: todo.checked ? "line-through" : null }}>
         {todo.text}
-      </span>
-      <button
+      </S.Text>
+      <S.DeleteBtn
         data-id={todo.id}
         className="delete"
         onClick={() => handleDeleteBtn(todo.id)}
       >
         삭제
-      </button>
-    </li>
+      </S.DeleteBtn>
+    </S.Li>
   );
 };
 

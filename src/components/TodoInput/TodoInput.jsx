@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as S from "./TodoInput.style.js";
 
 const TodoInput = ({ handleAddTodo }) => {
   const [value, setValue] = useState("");
@@ -9,21 +10,23 @@ const TodoInput = ({ handleAddTodo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleAddTodo(value);
-    setValue("");
+    if (value.length > 0) {
+      handleAddTodo(value);
+      setValue("");
+    }
   };
   return (
-    <div>
-      <span>TodoList✏️</span>
+    <S.Container>
+      <S.Title>TodoList✏️</S.Title>
       <form onSubmit={handleSubmit}>
-        <input
+        <S.Input
           onChange={handleChange}
           value={value}
           placeholder="할 일을 입력하세요"
         />
-        <button>추가</button>
+        <S.SubmitBtn>추가</S.SubmitBtn>
       </form>
-    </div>
+    </S.Container>
   );
 };
 export default TodoInput;
