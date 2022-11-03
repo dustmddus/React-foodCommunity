@@ -14,6 +14,7 @@ const TodoInput = ({ handleAddTodo }) => {
   };
   return (
     <div>
+      <span>TodoList✏️</span>
       <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import "./App.css";
-import TodoInput from "./components/TodoInput.jsx";
-import TodoList from "./components/TodoList.jsx";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+
 function App() {
   const nextId = useRef(0);
   const [todoList, setTodoList] = useState([]);
@@ -14,10 +14,28 @@ function App() {
     setTodoList(todoList.concat(todo));
     nextId.current++;
   };
+
+  const handleDeleteBtn = (id) => {
+    const newTodo = todoList.filter((item) => item.id !== id);
+    setTodoList(newTodo);
+  };
+
+  const handleCheckbox = (id) => {
+    setTodoList(
+      todoList.map((todo) => {
+        return todo.id === id ? { ...todo, checked: !todo.checked } : todo;
+      })
+    );
+  };
+
   return (
     <div className="App">
       <TodoInput handleAddTodo={handleAddTodo} />
-      <TodoList todoList={todoList} />
+      <TodoList
+        todoList={todoList}
+        handleDeleteBtn={handleDeleteBtn}
+        handleCheckbox={handleCheckbox}
+      />
     </div>
   );
 }
