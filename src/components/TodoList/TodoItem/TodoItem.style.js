@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Li = styled.li`
-  width: 200px;
+  width: 400px;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
